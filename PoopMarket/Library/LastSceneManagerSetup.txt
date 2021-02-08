@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Scenes/MiniGames/FoodFall.unity
+- path: Assets/Scenes/MiniGames/FoodFall/FoodFall.unity
   isLoaded: 1
   isActive: 1
