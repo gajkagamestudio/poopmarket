@@ -2,13 +2,20 @@
 using UnityEngine;
 
 [Serializable]
+public class BusterLevel {
+    public int LevelNumber;
+    public float LevelCost;
+    public float AddingPoopCost;
+}
+
+[Serializable]
 public class Buster {
     public int Id;
     public string Name;
     public bool IsActive;
-    public float BusterCost;
-    public float AddingPoopCost;
     public Sprite Sprite;
+    public int BusterCurrentLevel;
+    public BusterLevel [] BusterLevels;
 }
 
 [Serializable]
@@ -36,25 +43,9 @@ public class AnimalsController : MonoBehaviour
             animal.Id = index++;
 
             var newAnimalButton = Instantiate(AnimalButtonPrefab, AnimalsParent);
-            var newAnimalController = newAnimalButton.AddComponent<AnimalController>();
+            var newAnimalController = newAnimalButton.GetComponent<AnimalController>();
             newAnimalController.AnimalId = animal.Id;
-
-            foreach (var buster in animal.Busters) {
-                if (buster.Name.Equals("AutoPoop") && buster.IsActive) {
-                    newAnimalController.AutoPoopActive = true;
-                    newAnimalController.AutoPoopTime = 2f;
-                    newAnimalController.AutoPooping();
-                }
-            }
         }
-    }
-
-    /**
-     * What happens when user clicks on animal
-     */
-    public void AnimalClick(int animalId) {
-        Debug.Log("Click on animal ID " + animalId);
-        this.AnimalPoop(animalId);
     }
 
     /**
@@ -67,13 +58,12 @@ public class AnimalsController : MonoBehaviour
 
     private void AddMoney(int animalId) {
         float sum = Animals[animalId].PoopCost;
-        
         foreach (var buster in Animals[animalId].Busters) {
             if (buster.IsActive) {
-                sum += buster.AddingPoopCost;
+                sum += buster.BusterLevels[buster.BusterCurrentLevel].AddingPoopCost;
             }
         }
         
-        GameManager.Money += sum;
+        GameManager.Money += Mathf.Round(sum * 100f) / 100f; ;
     }
 }

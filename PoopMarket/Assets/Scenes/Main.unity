@@ -260,7 +260,7 @@ GameObject:
   - component: {fileID: 182123244}
   m_Layer: 0
   m_Name: AnimalsController
-  m_TagString: Untagged
+  m_TagString: AnimalsController
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -301,12 +301,21 @@ MonoBehaviour:
     - Id: 0
       Name: AutoPoop
       IsActive: 1
-      BusterCost: 23
-      AddingPoopCost: 0.2
       Sprite: {fileID: 0}
-  AnimalButtonPrefab: {fileID: 7114493900376104073, guid: b676a73d9069a6444bf1a1528030a4c5,
+      BusterCurrentLevel: 0
+      BusterLevels:
+      - LevelNumber: 0
+        LevelCost: 3
+        AddingPoopCost: 0.13
+      - LevelNumber: 1
+        LevelCost: 5
+        AddingPoopCost: 0.16
+      - LevelNumber: 2
+        LevelCost: 7
+        AddingPoopCost: 0.2
+  AnimalButtonPrefab: {fileID: 2635106689871876642, guid: b676a73d9069a6444bf1a1528030a4c5,
     type: 3}
-  AnimalsParent: {fileID: 0}
+  AnimalsParent: {fileID: 200302592}
 --- !u!1 &200302591
 GameObject:
   m_ObjectHideFlags: 0
