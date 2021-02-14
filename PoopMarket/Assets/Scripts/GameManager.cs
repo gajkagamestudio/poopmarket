@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
         set
         {
             money = value;
-            UIController.TextMoney.text = money.ToString();
+            UIController.TextMoney.text = money.ToString("#.##");
             PlayerPrefs.SetFloat("Money", money);
         }
     }

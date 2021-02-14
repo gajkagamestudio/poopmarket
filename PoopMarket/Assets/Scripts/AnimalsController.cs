@@ -1,69 +1,58 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using UnityEngine;
-
-[Serializable]
-public class BusterLevel {
-    public int LevelNumber;
-    public float LevelCost;
-    public float AddingPoopCost;
-}
-
-[Serializable]
-public class Buster {
-    public int Id;
-    public string Name;
-    public bool IsActive;
-    public Sprite Sprite;
-    public int BusterCurrentLevel;
-    public BusterLevel [] BusterLevels;
-}
-
-[Serializable]
-public class AnimalBase {
-    [HideInInspector] public int Id;
-    public float PoopCost;
-    public string AnimalName;
-
-    public bool IsActive;
-    public float AnimalCost;
-
-    public Buster [] Busters;
-}
 
 public class AnimalsController : MonoBehaviour
 {
-    public AnimalBase[] Animals;
-    public GameObject AnimalButtonPrefab;
-    public Transform AnimalsParent;
+    public int ActiveAnimalIndex; // Animal which is currently on display
+    public List<AnimalController> Animals;
 
-    private void Start() {
-        int index = 0;
-        
-        foreach (var animal in Animals) {
-            animal.Id = index++;
+    [SerializeField] RectTransform AnimalsHolder;
+    [SerializeField] float swipeSpeed;
 
-            var newAnimalButton = Instantiate(AnimalButtonPrefab, AnimalsParent);
-            var newAnimalController = newAnimalButton.GetComponent<AnimalController>();
-            newAnimalController.AnimalId = animal.Id;
+    private Vector2 newPosition;
+
+    private void Start()
+    {
+        var animals = GameObject.FindGameObjectsWithTag("Animal");
+        foreach (var animal in animals)
+        {
+            this.Animals.Add(animal.GetComponent<AnimalController>());
         }
     }
 
-    /**
-     * What happens when animal poop
-     */
-    public void AnimalPoop(int animalId) {
-        Debug.Log("Animal poop, animal ID " + animalId);
-        this.AddMoney(animalId);
+    private void Update()
+    {
+        this.AnimalsHolder.anchoredPosition = 
+            Vector2.Lerp(
+                this.AnimalsHolder.anchoredPosition, 
+                new Vector2(
+                    Screen.width * this.ActiveAnimalIndex * -1f, 
+                    this.AnimalsHolder.anchoredPosition.y), 
+                Time.deltaTime * swipeSpeed);
     }
 
-    private void AddMoney(int animalId) {
-        float sum = Animals[animalId].PoopCost;
-        foreach (var buster in Animals[animalId].Busters) {
-            if (buster.IsActive) {
-                sum += buster.BusterLevels[buster.BusterCurrentLevel].AddingPoopCost;
-            }
+    public void SwipeLeft()
+    {
+        if (this.ActiveAnimalIndex == 0)
+        {
+            return;
         }
-        
-        GameManager.Money += Mathf.Round(sum * 100f) / 100f; ;
+
+        SelectAnimal(true);
+    }
+
+    public void SwipeRight()
+    {
+        if (this.ActiveAnimalIndex == this.Animals.Count - 1)
+        {
+            return;
+        }
+
+        SelectAnimal(false);
+    }
+
+    private void SelectAnimal(bool left)
+    {
+        this.ActiveAnimalIndex += left ? -1 : 1;
     }
 }

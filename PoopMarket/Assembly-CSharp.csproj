@@ -64,9 +64,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scenes\MiniGames\FoodFall\Scripts\PlayerMovement.cs" />
     <Compile Include="Assets\Scripts\AnimalController.cs" />
     <Compile Include="Assets\Scripts\AnimalsController.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
+    <Compile Include="Assets\Scripts\PoopController.cs" />
     <Compile Include="Assets\Scripts\UIController.cs" />
     <Reference Include="Unity.TextMeshPro.Editor">
       <HintPath>D:/Projects/Gajka Game Studio/b1/PoopMarket/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
